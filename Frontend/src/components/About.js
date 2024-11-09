@@ -1,5 +1,5 @@
 import React from 'react';
-import aboutImage from 'D:/mehendi project/front-end/src/about image.avif'
+import aboutImage from 'D:/Mehendi Project New/Frontend/src/about image.avif'
 
 function About() {
   return (
