@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const app = express();
 
 app.use(cors());
 
@@ -8,8 +9,6 @@ const corsOptions = {
   origin: 'https://mehendi-app-front.vercel.app', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],  
 }
-
-const app = express();
 
 app.use(cors(corsOptions));
 
