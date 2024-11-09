@@ -34,7 +34,7 @@ const Orders = () => {
   }
 
   // Filter bookings by search term (client name)
-  const filteredBookings = bookings.filter(booking =>
+  const filteredBookings = bookings?.filter(booking =>
     booking.clientName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -54,11 +54,11 @@ const Orders = () => {
         />
       </div>
 
-      {filteredBookings.length === 0 ? (
+      {filteredBookings?.length === 0 ? (
         <p className="text-center text-lg">No bookings found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredBookings.map((booking) => (
+          {filteredBookings?.map((booking) => (
             <div key={booking._id} className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
               <h3 className="font-bold text-lg">{booking.Design}</h3>
               <p><strong>Price:</strong> ${booking.price}</p>
