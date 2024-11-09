@@ -9,13 +9,14 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],  
 }
 
+const app = express();
+
 app.use(cors(corsOptions));
 
 const bookingRoutes = require('./routes/booking.route.js');
 
 require('dotenv').config();
 
-const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
 
 // Use the booking routes
