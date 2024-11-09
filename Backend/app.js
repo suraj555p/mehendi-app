@@ -1,5 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+app.use(cors());
+
+const corsOptions = {
+  origin: 'https://mehendi-app-front.vercel.app', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+}
+
+app.use(cors(corsOptions));
+
 const bookingRoutes = require('./routes/booking.route.js');
 
 require('dotenv').config();
