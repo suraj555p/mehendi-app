@@ -11,7 +11,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('/api/bookings'); // Adjusted URL, proxy will handle it
+        const response = await axios.get('https://mehendi-app.onrender.com/api/bookings'); // Adjusted URL, proxy will handle it
         setBookings(response.data.bookings);
       } catch (err) {
         setError(err.message || 'Failed to fetch bookings');

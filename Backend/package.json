@@ -7,7 +7,6 @@
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
-  "proxy": "https://mehendi-app-front.vercel.app",
   "keywords": [],
   "author": "",
   "license": "ISC",
