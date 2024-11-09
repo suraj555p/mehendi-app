@@ -1,10 +1,10 @@
 import React from 'react';
-import exampleImage from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/mehendi wallpaper 1.jpg'; // Adjust path to your image file
-import engagementImage from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/engagement mehendi design.jpeg'
-import BridalImage from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/BridalImage1.jpeg'
-import BabyShowerImage from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/babyshower.jpeg'
-import GroomImage from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/groomImage.jpeg'
-import logo from 'C:/Users/ACER/Desktop/Mehendi Project New/Frontend/src/mehendi logo.jpg';
+import exampleImage from '../mehendi wallpaper 1.jpg' // Adjust path to your image file
+import engagementImage from '../engagement mehendi design.jpeg'
+import BridalImage from '../BridalImage1.jpeg'
+import BabyShowerImage from '../babyshower.jpeg'
+import GroomImage from '../groomImage.jpeg'
+import logo from '../mehendi logo.jpg';
 import Card from './Card.js';
 
 
