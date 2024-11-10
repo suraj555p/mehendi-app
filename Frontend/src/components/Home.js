@@ -48,7 +48,7 @@ function Home() {
             the bride's hands and feet beautifully."
             imageUrl={BridalImage}
             buttonText="Enquire Now"
-            price={5000}
+            price="5000-8000"
           />
           <Card
             title="Groom design"
@@ -58,7 +58,7 @@ function Home() {
             represent love and connection with the bride."
             imageUrl={GroomImage}
             buttonText="Enquire Now"
-            price={5000}
+            price="2100-2500"
           />
           <Card
             title="Engagement design"
@@ -78,7 +78,7 @@ function Home() {
             anticipation of a newborn with delicate and playful art."
             imageUrl={BabyShowerImage}
             buttonText="Enquire Now"
-            price={5000}
+            price="1500-2100"
           />
         </div>
       </section>
