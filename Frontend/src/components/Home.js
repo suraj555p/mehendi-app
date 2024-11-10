@@ -70,6 +70,7 @@ function Home() {
             buttonText="Enquire Now"
             price={5000}
           />
+          
           <Card
             title="Baby shower design"
             description="Baby shower Mehendi designs feature joyful 
