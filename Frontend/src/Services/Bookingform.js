@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 
 function BookingForm() {
   const location = useLocation();
@@ -33,6 +33,12 @@ function BookingForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if title and price are provided
+    if (!title || !price) {
+      alert('Title and price are required. Please check the URL parameters.');
+      return;
+    }
+
     // Prepare the booking data
     const bookingData = {
       Design: title,
@@ -50,16 +56,16 @@ function BookingForm() {
 
       // Handle successful response
       console.log(response.data);
-      
+
       // Navigate to a confirmation page or show a success message
       navigate('/order-success');
     } catch (error) {
-      console.error('Error creating booking:', error);
-      alert('Failed to create booking. Please try again.');
+      // Improved error handling
+      const errorMessage = error.response ? error.response.data : error.message;
+      console.error('Error creating booking:', errorMessage);
+      alert(`Failed to create booking: ${errorMessage}`);
     }
   };
-  
-  
 
   return (
     <>
@@ -67,7 +73,7 @@ function BookingForm() {
         <h2 className="text-2xl font-bold mb-2 text-center">{title}</h2>
         <p className="text-lg font-semibold text-gray-800 mb-4 text-center">Price: ${price}</p>
       </div>
-      <div className="w-3/5 mx-auto p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
         <form onSubmit={handleSubmit}>
           {/* Client Name */}
           <div className="mb-4">
