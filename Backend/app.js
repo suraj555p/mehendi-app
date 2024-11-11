@@ -37,7 +37,7 @@ app.post('/send-email', async (req, res) => {
   // Email content
   const mailOptions = {
     from: email,
-    to: 'suraj87parmar@gmail.com', // Replace with admin's email
+    to: process.env.GMAIL_USER, // Replace with admin's email
     subject: `New Contact Form Submission from ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9fafb;">
