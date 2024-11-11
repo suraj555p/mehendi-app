@@ -38,11 +38,11 @@ function Navigation() {
               Contact Us
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/orders" className="text-white hover:text-gray-400 px-3 py-2">
               Orders
             </Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* Support & Social Media */}

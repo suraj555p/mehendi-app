@@ -11,6 +11,7 @@ import Contact from './components/Contact.js';
 import Orders from './components/Orders.js';
 import BookingForm from './Services/Bookingform.js';
 import BookingStatus from './Services/Bookingstatus.js';
+import OrderSuccess from './components/OrderSuccess.js';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/orders" element={<Orders/>}/>
         <Route path='/booking' element={<BookingForm/>}/>
         <Route path='/booking-status' element={<BookingStatus/>}/>
+        <Route path='/order-success' element={<OrderSuccess/>}/>
       </Routes>
       <Footer/>
    </Router>

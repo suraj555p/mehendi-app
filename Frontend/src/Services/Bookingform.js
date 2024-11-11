@@ -52,12 +52,14 @@ function BookingForm() {
       console.log(response.data);
       
       // Navigate to a confirmation page or show a success message
-      navigate('/booking-status', { state: response.data.booking });
+      navigate('/order-success');
     } catch (error) {
       console.error('Error creating booking:', error);
       alert('Failed to create booking. Please try again.');
     }
   };
+  
+  
 
   return (
     <>
