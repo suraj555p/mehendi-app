@@ -46,7 +46,7 @@ function BookingForm() {
 
     try {
       // Send POST request to create a new booking
-      const response = await axios.post('http://mehendi-app.onrender.com/api/bookings', bookingData);
+      const response = await axios.post('https://mehendi-app.onrender.com/api/bookings', bookingData);
 
       // Handle successful response
       console.log(response.data);
