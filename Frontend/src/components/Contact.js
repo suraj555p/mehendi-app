@@ -1,6 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('https://mehendi-app.onrender.com/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert('Message sent successfully!');
+        setFormData({ name: '', email: '', phone: '', message: '' }); // Clear the form
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      alert('Error sending message. Please try again.');
+      console.error(error);
+    }
+  };
+
   return (
     <div className="bg-white py-12 px-6 sm:px-10 lg:px-20">
       <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Contact Us</h2>
@@ -9,12 +41,14 @@ function Contact() {
       </p>
       
       <div className="max-w-3xl mx-auto">
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
               id="name"
+              value={formData.name}
+              onChange={handleChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Your Name"
               required
@@ -25,10 +59,10 @@ function Contact() {
             <input
               type="email"
               id="email"
+              value={formData.email}
+              onChange={handleChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Your Email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" // Regex for basic email validation
-              title="Please enter a valid email address (e.g., user@example.com)"
               required
             />
           </div>
@@ -37,10 +71,10 @@ function Contact() {
             <input
               type="tel"
               id="phone"
+              value={formData.phone}
+              onChange={handleChange}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Your Phone Number"
-              pattern="\+?[0-9]{1,4}?[-. ]?[0-9]{1,3}[-. ]?[0-9]{3}[-. ]?[0-9]{4}" // Regex for phone number validation
-              title="Please enter a valid phone number (e.g., +123 456 789 0123)"
               required
             />
           </div>
@@ -48,6 +82,8 @@ function Contact() {
             <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
             <textarea
               id="message"
+              value={formData.message}
+              onChange={handleChange}
               rows="4"
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Your Message"
