@@ -1,31 +1,27 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const app = express();
-
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+require('dotenv').config(); // Load environment variables from .env file
 
-app.use(cors());
+const app = express();
 
+// Set up CORS options
 const corsOptions = {
   origin: ['https://mehendi-app-front.vercel.app', 'http://localhost:3000'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],  
-}
+};
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-
-const bookingRoutes = require('./routes/booking.route.js');
-
-require('dotenv').config();
-
 app.use(express.json()); // Middleware to parse JSON requests
 
-// Use the booking routes
+// Load routes
+const bookingRoutes = require('./routes/booking.route.js');
 app.use('/api', bookingRoutes);
 
-// nodemailer using for contact us
+// Nodemailer setup for "Contact Us" form
 app.post('/send-email', async (req, res) => {
   const { name, email, phone, message } = req.body;
 
@@ -33,8 +29,8 @@ app.post('/send-email', async (req, res) => {
   let transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: GMAIL_USER, // Replace with your Gmail
-      pass: GMAIL_PASS,  // Replace with your Gmail password or an app-specific password
+      user: process.env.GMAIL_USER, // Use environment variable for Gmail
+      pass: process.env.GMAIL_PASS,  // Use environment variable for Gmail password
     },
   });
 
@@ -74,8 +70,6 @@ app.post('/send-email', async (req, res) => {
     res.status(500).send('Failed to send email.');
   }
 });
-
-
 
 // Connect to MongoDB and start the server
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
