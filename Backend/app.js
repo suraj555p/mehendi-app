@@ -7,7 +7,7 @@ app.use(cors());
 
 const corsOptions = {
   origin: ['https://mehendi-app-front.vercel.app', 'http://localhost:3000'], 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],  
 }
 
 app.use(cors(corsOptions));

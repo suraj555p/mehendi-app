@@ -127,7 +127,7 @@ const createBooking = async (req, res) => {
             <li><strong>Order Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
           </ul>
           <p>If you have any questions, feel free to reach out.</p>
-          <p style="margin-top: 20px;">Best Regards,<br>Your Company Name</p>
+          <p style="margin-top: 20px;">Best Regards</p>
         </div>
       `,
     };
@@ -153,7 +153,7 @@ const createBooking = async (req, res) => {
             <li><strong>Order Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
           </ul>
           <p>Please review this order and take appropriate action.</p>
-          <p style="margin-top: 20px;">Best Regards,<br>Your Company Name</p>
+          <p style="margin-top: 20px;">Best Regards</p>
         </div>
       `,
     };
@@ -261,7 +261,7 @@ const updateBookingStatus = async (req, res) => {
           <p>Status: <strong>${status}</strong></p>
           <p>If you have any questions or concerns, please do not hesitate to contact us.</p>
           <p>Thank you for choosing our service!</p>
-          <p>Best Regards,<br>Your Company Name</p>
+          <p>Best Regards</p>
         </div>
       `,
     };
