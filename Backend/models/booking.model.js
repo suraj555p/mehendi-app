@@ -30,6 +30,11 @@ const bookingSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  status: {
+    type: String,
+    enum: ['pending', 'accepted', 'rejected'], // Restricting values
+    default: 'pending', 
+  },
 }, {
   timestamps: true, // Automatically adds createdAt and updatedAt fields
 });

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBooking, deleteBooking, viewAllBookings,viewBookingById } = require('../controllers/booking.controller.js');
+const { createBooking, deleteBooking, viewAllBookings,viewBookingById, updateBookingStatus } = require('../controllers/booking.controller.js');
 
 const router = express.Router();
 
@@ -14,5 +14,7 @@ router.get('/bookings', viewAllBookings);
 
 // Route to view specific bookings
 router.get('/bookings/:id', viewBookingById);
+
+router.patch('/bookings/:id/status', updateBookingStatus);
 
 module.exports = router;
