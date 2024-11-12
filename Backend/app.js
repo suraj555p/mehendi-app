@@ -17,8 +17,10 @@ app.use(express.json()); // Middleware to parse JSON requests
 // Load routes
 const bookingRoutes = require('./routes/booking.route.js');
 const contactusRoutes = require('./routes/contactus.route.js');
+const designRoutes=require('./routes/adddesigns.route.js')
 app.use('/api', bookingRoutes);
 app.use('/api',contactusRoutes);
+app.use('/api/designs', designRoutes);
 
 // Connect to MongoDB and start the server
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
