@@ -15,7 +15,7 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://mehendi-app.onrender.com/send-email', {
+      const response = await fetch('https://mehendi-app.onrender.com/api/sendMail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
