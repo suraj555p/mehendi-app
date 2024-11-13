@@ -76,7 +76,6 @@ const updateDesign = async (req, res) => {
 
     // If images are being updated, you may want to handle them here as well
     if (req.files) {
-      updatedDesign.coverImage = req.files['coverImage'] ? req.files['coverImage'][0].path : updatedDesign.coverImage;
       updatedDesign.designImage1 = req.files['designImage1'] ? req.files['designImage1'][0].path : updatedDesign.designImage1;
       updatedDesign.designImage2 = req.files['designImage2'] ? req.files['designImage2'][0].path : updatedDesign.designImage2;
       updatedDesign.designImage3 = req.files['designImage3'] ? req.files['designImage3'][0].path : updatedDesign.designImage3;
