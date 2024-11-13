@@ -19,7 +19,6 @@ const createDesign = async (req, res) => {
       description,
       price,
       bookingCharge,
-      coverImage: coverImageUrl,
       designImage1: designImage1Url,
       designImage2: designImage2Url,
       designImage3: designImage3Url,
