@@ -6,11 +6,13 @@ const createDesign = async (req, res) => {
     const { designName, description, price, bookingCharge } = req.body;
 
     // Retrieve uploaded image URLs from req.files
-    const coverImageUrl = req.files['coverImage'] ? req.files['coverImage'][0].path : null; 
+    // const coverImageUrl = req.files['coverImage'] ? req.files['coverImage'][0].path : null; 
     const designImage1Url = req.files['designImage1'] ? req.files['designImage1'][0].path : null; 
     const designImage2Url = req.files['designImage2'] ? req.files['designImage2'][0].path : null; 
     const designImage3Url = req.files['designImage3'] ? req.files['designImage3'][0].path : null; 
 
+    console.log(coverImageUrl);
+    
     // Create a new design instance
     const newDesign = new Design({
       designName,

@@ -6,6 +6,7 @@ import BabyShowerImage from '../babyshower.jpeg'
 import GroomImage from '../groomImage.jpeg'
 import logo from '../mehendi logo.jpg';
 import Card from './Card.js';
+import DynamicCard from '../dynamic card component/dynamicCard.js';
 
 
 function Home() {
@@ -81,6 +82,7 @@ function Home() {
             buttonText="Enquire Now"
             price="1500-2100"
           />
+          <DynamicCard/>
         </div>
       </section>
     </>

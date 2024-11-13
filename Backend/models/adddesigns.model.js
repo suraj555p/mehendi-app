@@ -18,10 +18,6 @@ const designSchema = new mongoose.Schema({
     type: String, // Booking charge is also defined as a string
     required: true, // Make this field required
   },
-  coverImage: {
-    type: String, // Assuming this will store a URL or path to the image
-    default: null,
-  },
   designImage1: {
     type: String, // Assuming this will store a URL or path to the image
     default: null,

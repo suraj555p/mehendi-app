@@ -13,7 +13,7 @@ const router = express.Router();
 // Define routes for CRUD operations
 // Use upload.array('images', 3) to handle multiple image uploads for createDesign
 router.post('/', upload.fields([
-    { name: 'coverImage', maxCount: 1 }, // Cover image
+//    { name: 'coverImage', maxCount: 1 }, // Cover image
     { name: 'designImage1', maxCount: 1 }, // First design image
     { name: 'designImage2', maxCount: 1 }, // Second design image
     { name: 'designImage3', maxCount: 1 }  // Third design image
