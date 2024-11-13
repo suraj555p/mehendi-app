@@ -7,7 +7,7 @@ const app = express();
 
 // Set up CORS options
 const corsOptions = {
-  origin: ['https://mehendi-app-front.vercel.app', 'http://localhost:3000'], 
+  origin: ['https://mehendi-app-front.vercel.app', 'http://localhost:3000','https://admin-pannel-8uyxvezkd-suraj555ps-projects.vercel.app'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],  
 };
 
