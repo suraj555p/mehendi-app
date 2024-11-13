@@ -8,12 +8,50 @@ function Contact() {
     message: '',
   });
 
+  const [formErrors, setFormErrors] = useState({});
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFormErrors({ ...formErrors, [e.target.id]: '' }); // Clear error on change
+  };
+
+  const validateForm = () => {
+    let errors = {};
+    
+    // Name validation
+    if (!formData.name) {
+      errors.name = 'Name is required.';
+    }
+
+    // Email validation
+    if (!formData.email) {
+      errors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email address is invalid.';
+    }
+
+    // Phone validation
+    if (!formData.phone) {
+      errors.phone = 'Phone number is required.';
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      errors.phone = 'Phone number must be 10 digits.';
+    }
+
+    // Message validation
+    if (!formData.message) {
+      errors.message = 'Message is required.';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form data
+    if (!validateForm()) return;
+
     try {
       const response = await fetch('https://mehendi-app.onrender.com/api/sendMail', {
         method: 'POST',
@@ -49,10 +87,11 @@ function Contact() {
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${formErrors.name ? 'border-red-500' : ''}`}
               placeholder="Your Name"
               required
             />
+            {formErrors.name && <p className="text-red-500 text-sm">{formErrors.name}</p>}
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -61,10 +100,11 @@ function Contact() {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${formErrors.email ? 'border-red-500' : ''}`}
               placeholder="Your Email"
               required
             />
+            {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
           </div>
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
@@ -73,10 +113,11 @@ function Contact() {
               id="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${formErrors.phone ? 'border-red-500' : ''}`}
               placeholder="Your Phone Number"
               required
             />
+            {formErrors.phone && <p className="text-red-500 text-sm">{formErrors.phone}</p>}
           </div>
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
@@ -85,10 +126,11 @@ function Contact() {
               value={formData.message}
               onChange={handleChange}
               rows="4"
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${formErrors.message ? 'border-red-500' : ''}`}
               placeholder="Your Message"
               required
             ></textarea>
+            {formErrors.message && <p className="text-red-500 text-sm">{formErrors.message}</p>}
           </div>
           <div className="text-center">
             <button

@@ -43,6 +43,9 @@ function Navigation() {
               Orders
             </Link>
           </li> */}
+          <Link to="/design-gallery" className="text-white hover:text-gray-400 px-3 py-2">
+              DesignsGallery
+            </Link>
         </ul>
 
         {/* Support & Social Media */}

@@ -13,6 +13,7 @@ import BookingForm from './Services/Bookingform.js';
 import BookingStatus from './Services/Bookingstatus.js';
 import OrderSuccess from './components/OrderSuccess.js';
 import DynamicCard from './dynamic card component/dynamicCard.js';
+import DesignGallery from './components/DesignGallery.js';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/booking' element={<BookingForm/>}/>
         <Route path='/booking-status' element={<BookingStatus/>}/>
         <Route path='/order-success' element={<OrderSuccess/>}/>
+        <Route path='/design-gallery' element={<DesignGallery/>}/>
         <Route path='/' element={<DynamicCard/>}/>
       </Routes>
       <Footer/>

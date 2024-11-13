@@ -23,10 +23,34 @@ function BookingForm() {
     orderDate: '',
   });
 
+  const [formErrors, setFormErrors] = useState({});
+
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFormErrors({ ...formErrors, [name]: '' }); // Clear error on change
+  };
+
+  // Validate form data
+  const validateForm = () => {
+    let errors = {};
+    if (!formData.clientName) errors.clientName = 'Client name is required.';
+    if (!formData.email) {
+      errors.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email address is invalid.';
+    }
+    if (!formData.phoneNumber) {
+      errors.phoneNumber = 'Phone number is required.';
+    } else if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be 10 digits.';
+    }
+    if (!formData.address) errors.address = 'Address is required.';
+    if (!formData.orderDate) errors.orderDate = 'Order booking date is required.';
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
   };
 
   // Handle form submission
@@ -38,6 +62,9 @@ function BookingForm() {
       alert('Title and price are required. Please check the URL parameters.');
       return;
     }
+
+    // Validate form data
+    if (!validateForm()) return;
 
     // Prepare the booking data
     const bookingData = {
@@ -84,9 +111,10 @@ function BookingForm() {
               name="clientName"
               value={formData.clientName}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className={`w-full p-2 border ${formErrors.clientName ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
             />
+            {formErrors.clientName && <p className="text-red-500 text-sm">{formErrors.clientName}</p>}
           </div>
 
           {/* Email ID */}
@@ -98,9 +126,10 @@ function BookingForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className={`w-full p-2 border ${formErrors.email ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
             />
+            {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
           </div>
 
           {/* Phone Number */}
@@ -112,9 +141,10 @@ function BookingForm() {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className={`w-full p-2 border ${formErrors.phoneNumber ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
             />
+            {formErrors.phoneNumber && <p className="text-red-500 text-sm">{formErrors.phoneNumber}</p>}
           </div>
 
           {/* Address */}
@@ -125,9 +155,10 @@ function BookingForm() {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className={`w-full p-2 border ${formErrors.address ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
             ></textarea>
+            {formErrors.address && <p className="text-red-500 text-sm">{formErrors.address}</p>}
           </div>
 
           {/* Order Booking Date */}
@@ -139,9 +170,10 @@ function BookingForm() {
               name="orderDate"
               value={formData.orderDate}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className={`w-full p-2 border ${formErrors.orderDate ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
             />
+            {formErrors.orderDate && <p className="text-red-500 text-sm">{formErrors.orderDate}</p>}
           </div>
 
           {/* Submit Button */}
