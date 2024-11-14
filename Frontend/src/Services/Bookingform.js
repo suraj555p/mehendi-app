@@ -90,7 +90,10 @@ function BookingForm() {
       // Improved error handling
       const errorMessage = error.response ? error.response.data : error.message;
       console.error('Error creating booking:', errorMessage);
-      alert(`Failed to create booking: ${errorMessage}`);
+      alert(`Failed to create booking: ${errorMessage}  
+         Your name is already exist!!!
+         Please add another record.
+        `);
     }
   };
 
