@@ -20,8 +20,8 @@ const sendEmail = async (req, res) => {
   }
 
   const mailOptions = {
-    from: process.env.GMAIL_USER, // Your email address
-    to: email, // Send email to the client
+    from: email, // sender email
+    to: process.env.GMAIL_USER, // receiver email
     subject: `New Contact Form Submission from ${name}`,
     html: `
       <!DOCTYPE html>
