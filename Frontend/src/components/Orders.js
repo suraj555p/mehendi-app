@@ -153,7 +153,7 @@ const Orders = () => {
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <h3 className="font-bold text-lg">{booking.Design}</h3>
-              <p><strong>Price:</strong> ${booking.price}</p>
+              <p><strong>Price:</strong> ₹{booking.price}</p>
               <p><strong>Client Name:</strong> {booking.clientName}</p>
               <p><strong>Email:</strong> {booking.email}</p>
               <p><strong>Phone Number:</strong> {booking.phoneNumber}</p>
