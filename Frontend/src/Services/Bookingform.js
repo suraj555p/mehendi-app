@@ -7,6 +7,7 @@ function BookingForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
 
   // Extract and decode the parameters from the URL
   useEffect(() => {
@@ -66,6 +67,8 @@ function BookingForm() {
     // Validate form data
     if (!validateForm()) return;
 
+    setLoading(true); // Set loading state
+
     // Prepare the booking data
     const bookingData = {
       Design: title,
@@ -84,16 +87,18 @@ function BookingForm() {
       // Handle successful response
       console.log(response.data);
 
-      // Navigate to a confirmation page or show a success message
+      // Navigate to a confirmation page
       navigate('/order-success');
     } catch (error) {
       // Improved error handling
+      if(formData.clientName===Response.clientName){
+        <p>Your name is already exists !!! Please fill another name.</p>
+      }
       const errorMessage = error.response ? error.response.data : error.message;
       console.error('Error creating booking:', errorMessage);
-      alert(`Failed to create booking: ${errorMessage}  
-         Your name is already exist!!!
-         Please add another record.
-        `);
+      alert(`Failed to create booking: ${errorMessage}`);
+    } finally {
+      setLoading(false); // Clear loading state
     }
   };
 
@@ -180,11 +185,12 @@ function BookingForm() {
           </div>
 
           {/* Submit Button */}
-          <button 
+          <button
             type="submit"
             className="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 mx-auto block text-center"
+            disabled={loading} // Disable button when loading
           >
-            Book now
+            {loading ? 'Booking...' : 'Book now'} {/* Show loading text */}
           </button>
         </form>
       </div>

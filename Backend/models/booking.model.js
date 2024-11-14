@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
   Design: {
-    type: [String],
+    type: String,
     required: true,
   },
   price: {
-    type: [String],
+    type: String,
     required: true,
   },
   clientName: {
-    type: [String],
+    type: String,
     required: true,
   },
   email: {
-    type: [String],
+    type: String,
     required: true,
   },
   phoneNumber: {
