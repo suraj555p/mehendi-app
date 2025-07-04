@@ -7,9 +7,8 @@ function BookingForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
-  // Extract and decode the parameters from the URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setTitle(params.get('title') || '');
@@ -26,14 +25,12 @@ function BookingForm() {
 
   const [formErrors, setFormErrors] = useState({});
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setFormErrors({ ...formErrors, [name]: '' }); // Clear error on change
+    setFormErrors({ ...formErrors, [name]: '' });
   };
 
-  // Validate form data
   const validateForm = () => {
     let errors = {};
     if (!formData.clientName) errors.clientName = 'Client name is required.';
@@ -51,25 +48,21 @@ function BookingForm() {
     if (!formData.orderDate) errors.orderDate = 'Order booking date is required.';
 
     setFormErrors(errors);
-    return Object.keys(errors).length === 0; // Return true if no errors
+    return Object.keys(errors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if title and price are provided
     if (!title || !price) {
       alert('Title and price are required. Please check the URL parameters.');
       return;
     }
 
-    // Validate form data
     if (!validateForm()) return;
 
-    setLoading(true); // Set loading state
+    setLoading(true);
 
-    // Prepare the booking data
     const bookingData = {
       Design: title,
       price: price,
@@ -81,24 +74,25 @@ function BookingForm() {
     };
 
     try {
-      // Send POST request to create a new booking
-      const response = await axios.post('https://mehendi-app.onrender.com/api/bookings', bookingData);
+      const response = await axios.post(
+        'https://mehendi-app.onrender.com/api/bookings',
+        bookingData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: false,
+        }
+      );
 
-      // Handle successful response
       console.log(response.data);
-
-      // Navigate to a confirmation page
       navigate('/order-success');
     } catch (error) {
-      // Improved error handling
-      if(formData.clientName===Response.clientName){
-        <p>Your name is already exists !!! Please fill another name.</p>
-      }
-      const errorMessage = error.response ? error.response.data : error.message;
-      console.error('Error creating booking:', errorMessage);
+      const errorMessage = error.response?.data?.message || error.message;
       alert(`Failed to create booking: ${errorMessage}`);
+      console.error('Error creating booking:', errorMessage);
     } finally {
-      setLoading(false); // Clear loading state
+      setLoading(false);
     }
   };
 
@@ -180,6 +174,7 @@ function BookingForm() {
               onChange={handleChange}
               className={`w-full p-2 border ${formErrors.orderDate ? 'border-red-500' : 'border-gray-300'} rounded`}
               required
+              min={new Date().toISOString().split("T")[0]}
             />
             {formErrors.orderDate && <p className="text-red-500 text-sm">{formErrors.orderDate}</p>}
           </div>
@@ -188,9 +183,9 @@ function BookingForm() {
           <button
             type="submit"
             className="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 mx-auto block text-center"
-            disabled={loading} // Disable button when loading
+            disabled={loading}
           >
-            {loading ? 'Booking...' : 'Book now'} {/* Show loading text */}
+            {loading ? 'Booking...' : 'Book now'}
           </button>
         </form>
       </div>
