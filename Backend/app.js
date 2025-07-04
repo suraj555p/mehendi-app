@@ -9,6 +9,7 @@ const app = express();
 const corsOptions = {
   origin: ['https://mehendi-app-front.vercel.app', 'http://localhost:3000','https://admin-pannel-one.vercel.app'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],  
+   credentials: true,
 };
 
 app.use(cors(corsOptions));
