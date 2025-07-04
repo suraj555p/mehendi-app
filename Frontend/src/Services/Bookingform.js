@@ -79,9 +79,8 @@ function BookingForm() {
         bookingData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/booking-data',
           },
-          withCredentials: false,
         }
       );
 
