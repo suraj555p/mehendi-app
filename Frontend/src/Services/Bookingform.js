@@ -77,11 +77,6 @@ function BookingForm() {
       const response = await axios.post(
         'https://mehendi-app.onrender.com/api/bookings',
         bookingData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
       );
 
       console.log(response.data);
