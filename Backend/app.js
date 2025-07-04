@@ -13,6 +13,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Preflight support
 app.use(express.json()); // Middleware to parse JSON requests
 
 // Load routes
