@@ -84,7 +84,7 @@ const createBooking = async (req, res) => {
     const { Design, price, clientName, email, phoneNumber, address, orderBookingDate } = req.body;
 
     // Validate required fields
-    if (!Design || !price || !clientName || !email || !phoneNumber || !address || !orderBookingDate) {
+    if ( !clientName || !email || !phoneNumber || !address || !orderBookingDate) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
