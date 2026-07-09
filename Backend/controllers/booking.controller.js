@@ -34,6 +34,16 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Check if this email already has a booking that's still pending.
+    // We only block on 'pending' — once a booking is accepted/rejected,
+    // the same customer should be free to book again.
+    const existingBooking = await Booking.findOne({ email, status: 'pending' });
+    if (existingBooking) {
+      return res.status(409).json({
+        error: 'You already have a pending booking. Please wait for it to be reviewed before booking again.',
+      });
+    }
+
     const newBooking = new Booking({
       Design,
       price,
