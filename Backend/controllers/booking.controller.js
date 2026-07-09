@@ -1,17 +1,17 @@
 const Booking = require('../models/booking.model.js');
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-// Create a transporter object using Gmail SMTP (explicit host/port — more reliable on cloud hosts like Render)
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Resend's free tier lets you send from this test address without verifying
+// your own domain. Once you verify a domain on resend.com, replace this with
+// something like 'bookings@yourdomain.com'.
+const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+
+// Where admin notifications should land — reusing GMAIL_USER as the admin's
+// inbox address (not used for sending anymore, just as the recipient).
+const ADMIN_EMAIL = process.env.GMAIL_USER;
 
 // Internal helper to delete booking by ID without req/res
 const deleteBookingById = async (id) => {
@@ -48,55 +48,51 @@ const createBooking = async (req, res) => {
     savedBooking = await newBooking.save();
     console.log('Booking saved.');
 
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: email,
-      subject: 'Order Confirmation - Your Order is Pending Approval',
-      replyTo: email,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
-          <h2 style="color: #4CAF50;">Dear ${clientName},</h2>
-          <p>Thank you for your order!</p>
-          <p>Your order is pending approval. Admin will connect with you soon.</p>
-          <h3>Order Details:</h3>
-          <ul>
-            <li><strong>Design:</strong> ${Design}</li>
-            <li><strong>Price:</strong> $${price}</li>
-            <li><strong>Phone Number:</strong> ${phoneNumber}</li>
-            <li><strong>Address:</strong> ${address}</li>
-            <li><strong>Order Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
-          </ul>
-          <p>Best Regards</p>
-        </div>
-      `,
-    };
+    const customerHtml = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
+        <h2 style="color: #4CAF50;">Dear ${clientName},</h2>
+        <p>Thank you for your order!</p>
+        <p>Your order is pending approval. Admin will connect with you soon.</p>
+        <h3>Order Details:</h3>
+        <ul>
+          <li><strong>Design:</strong> ${Design}</li>
+          <li><strong>Price:</strong> $${price}</li>
+          <li><strong>Phone Number:</strong> ${phoneNumber}</li>
+          <li><strong>Address:</strong> ${address}</li>
+          <li><strong>Order Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
+        </ul>
+        <p>Best Regards</p>
+      </div>
+    `;
 
-    const adminMailOptions = {
-      from: process.env.GMAIL_USER,
-      to: process.env.GMAIL_USER,
-      subject: 'New Order Notification',
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
-          <h2 style="color: #4CAF50;">New Order Received</h2>
-          <p>Review the following order:</p>
-          <ul>
-            <li><strong>Design:</strong> ${Design}</li>
-            <li><strong>Price:</strong> $${price}</li>
-            <li><strong>Client:</strong> ${clientName}</li>
-            <li><strong>Email:</strong> ${email}</li>
-            <li><strong>Phone:</strong> ${phoneNumber}</li>
-            <li><strong>Address:</strong> ${address}</li>
-            <li><strong>Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
-          </ul>
-        </div>
-      `,
-    };
+    const adminHtml = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
+        <h2 style="color: #4CAF50;">New Order Received</h2>
+        <p>Review the following order:</p>
+        <ul>
+          <li><strong>Design:</strong> ${Design}</li>
+          <li><strong>Price:</strong> $${price}</li>
+          <li><strong>Client:</strong> ${clientName}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Phone:</strong> ${phoneNumber}</li>
+          <li><strong>Address:</strong> ${address}</li>
+          <li><strong>Booking Date:</strong> ${new Date(orderBookingDate).toLocaleDateString()}</li>
+        </ul>
+      </div>
+    `;
 
     // Send customer confirmation email
     // NOTE: booking is NOT rolled back if this fails — the booking data itself
     // is valid, an email hiccup shouldn't cost the customer their booking.
     try {
-      await transporter.sendMail(mailOptions);
+      const { error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        reply_to: ADMIN_EMAIL,
+        subject: 'Order Confirmation - Your Order is Pending Approval',
+        html: customerHtml,
+      });
+      if (error) throw new Error(error.message || JSON.stringify(error));
       console.log('Customer email sent.');
     } catch (emailErr) {
       console.error('Error sending customer email:', emailErr.message);
@@ -104,7 +100,13 @@ const createBooking = async (req, res) => {
 
     // Send admin notification email (non-critical either way)
     try {
-      await transporter.sendMail(adminMailOptions);
+      const { error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: ADMIN_EMAIL,
+        subject: 'New Order Notification',
+        html: adminHtml,
+      });
+      if (error) throw new Error(error.message || JSON.stringify(error));
       console.log('Admin email sent.');
     } catch (adminEmailErr) {
       console.error('Admin email failed (non-critical):', adminEmailErr.message);
@@ -173,22 +175,23 @@ const updateBookingStatus = async (req, res) => {
       return res.status(404).json({ error: 'Booking not found' });
     }
 
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: updatedBooking.email,
-      subject: `Your Booking Status: ${status.toUpperCase()}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Dear ${updatedBooking.clientName},</h2>
-          <p>Your booking for <strong>${updatedBooking.Design}</strong> has been updated.</p>
-          <p>Status: <strong>${status}</strong></p>
-          <p>If you have any questions, feel free to reach out.</p>
-        </div>
-      `,
-    };
+    const statusHtml = `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h2>Dear ${updatedBooking.clientName},</h2>
+        <p>Your booking for <strong>${updatedBooking.Design}</strong> has been updated.</p>
+        <p>Status: <strong>${status}</strong></p>
+        <p>If you have any questions, feel free to reach out.</p>
+      </div>
+    `;
 
     try {
-      await transporter.sendMail(mailOptions);
+      const { error } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: updatedBooking.email,
+        subject: `Your Booking Status: ${status.toUpperCase()}`,
+        html: statusHtml,
+      });
+      if (error) throw new Error(error.message || JSON.stringify(error));
     } catch (emailErr) {
       console.error('Error sending status update email:', emailErr.message);
       // Status was already updated in DB — don't fail the request just because the email didn't go out.
