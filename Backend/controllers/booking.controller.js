@@ -2,9 +2,11 @@ const Booking = require('../models/booking.model.js');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-// Create a transporter object using Gmail service
+// Create a transporter object using Gmail SMTP (explicit host/port — more reliable on cloud hosts like Render)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
@@ -90,16 +92,17 @@ const createBooking = async (req, res) => {
       `,
     };
 
-    // Send emails
+    // Send customer confirmation email
+    // NOTE: booking is NOT rolled back if this fails — the booking data itself
+    // is valid, an email hiccup shouldn't cost the customer their booking.
     try {
       await transporter.sendMail(mailOptions);
       console.log('Customer email sent.');
     } catch (emailErr) {
       console.error('Error sending customer email:', emailErr.message);
-      await deleteBookingById(savedBooking._id);
-      return res.status(500).json({ error: 'Booking saved but email failed', details: emailErr.message });
     }
 
+    // Send admin notification email (non-critical either way)
     try {
       await transporter.sendMail(adminMailOptions);
       console.log('Admin email sent.');
@@ -184,7 +187,13 @@ const updateBookingStatus = async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailErr) {
+      console.error('Error sending status update email:', emailErr.message);
+      // Status was already updated in DB — don't fail the request just because the email didn't go out.
+    }
+
     res.status(200).json({ message: 'Booking status updated successfully', booking: updatedBooking });
   } catch (error) {
     console.error('Failed to update booking status:', error.message);
