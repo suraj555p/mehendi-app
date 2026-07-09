@@ -88,7 +88,7 @@ const createBooking = async (req, res) => {
       const { error } = await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
-        reply_to: ADMIN_EMAIL,
+        reply_to: email,
         subject: 'Order Confirmation - Your Order is Pending Approval',
         html: customerHtml,
       });
